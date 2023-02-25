@@ -1,6 +1,10 @@
+import UserResults from "../../users/UserResults"
+
 function Home() {
   return (
-    <h2>Content</h2>
+    <>
+      <UserResults />
+    </>
   )
 }
 export default Home
