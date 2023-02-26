@@ -11,7 +11,7 @@ function UserItem({user: {avatar, login}}) {
             </div>
         </div>
     </div>
-  )
+  ) 
 }
 
 export default UserItem
