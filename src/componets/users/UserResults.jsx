@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import Spinner from "../layout/Spinner"
+import UserItem from "./UserItem"
 
 function UserResults() {
   const [users, setUsers] = useState([])
@@ -11,7 +12,7 @@ function UserResults() {
 
   async function fetchUsers() {
     const url = 'https://api.github.com'
-    const token = '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'
+    const token = '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'
     const options = {
         headers: {
             authorization: `token ${token}`
@@ -33,18 +34,7 @@ function UserResults() {
   } 
   return (
     <div className="grid grid-cols-1 gap-8 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2">
-        {!loading ? users.map(item => {
-       return (
-        <div className="flex gap-2 items-center shadow-md rounded-sm p-2" key={item.id}>
-            <img src={item.avatar} alt="" className="w-10 h-10 rounded-full object-cover object-center" />
-            <div className="flex flex-col justify-between">
-                <h2 className="text-lg">{item.login}</h2>
-                <a href={item.url} className='text-sm capitalize' >visit profile</a>
-            </div>
-       </div>
-       )
-
-        }): <Spinner /> }
+        {!loading ? users.map(item => <UserItem key={item.id} user={item}/> ): <Spinner /> }
     </div>
   )
 }
