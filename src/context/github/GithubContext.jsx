@@ -1,16 +1,21 @@
-import { createContext, useState } from "react";
+import { createContext, useReducer } from "react";
+import githubReducer from "./GithubReducer";
 
 export const GithubContext = createContext()
 
-const url = 'https://api.github.com'
-const token = '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'
+const url = import.meta.env.VITE_GITHUB_URL
+const token = import.meta.env.VITE_GITHUB_TOKEN
 
 export default function GithubProvider({children}) {
-  const [users, setUsers] = useState([])
-  const [loading, setLoading] = useState(true)
+  const initialState = {
+    users: [],
+    loading: false
+  }
+  const [state, dispatch] = useReducer(githubReducer, initialState)
 
-
+ //for testing purposes
   async function fetchUsers() {
+    setLoading()
     const options = {
         headers: {
             authorization: `token ${token}`
@@ -27,19 +32,21 @@ export default function GithubProvider({children}) {
             login: item.login
         }
     }) 
-    setUsers(usersData)   
-    setLoading(false)   
+     dispatch({type: 'get_users', payload: usersData})
+  }
+
+  //seting loading state
+  function setLoading() {
+    dispatch({type: 'set_loading'})
   }
     return (
         <GithubContext.Provider value={{
-            fetchUsers,
-            users,
-            loading
+            users: state.users,
+            loading: state.loading,
+            // fetchUsers
         }}
         >
             {children}
         </GithubContext.Provider>
     )
 }
-
-
