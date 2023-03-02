@@ -5,7 +5,6 @@ import {GithubContext} from "../../context/github/GithubContext"
 
 function UserResults() {
   const {
-    // fetchUsers, 
     users,
     loading
   } = useContext(GithubContext)
