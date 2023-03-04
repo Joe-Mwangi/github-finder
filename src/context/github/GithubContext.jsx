@@ -9,6 +9,7 @@ const token = import.meta.env.VITE_GITHUB_TOKEN
 export default function GithubProvider({children}) {
   const initialState = {
     users: [],
+    repos: [],
     user: {},
     loading: false
   }
@@ -37,6 +38,25 @@ export default function GithubProvider({children}) {
         }
     }) 
      dispatch({type: 'get_users', payload: usersData})
+  }
+
+   //get repos
+   async function getUserRepos(login) {
+    setLoading()
+
+    const params = new URLSearchParams({
+      sort: 'created',
+      per_page: 10
+    })
+
+    const options = {
+        headers: {
+            authorization: `token ${token}`
+        }
+    }
+    const response = await fetch(`${url}/users/${login}/repos?${params}`, options)    
+    const data = await response.json()  
+     dispatch({type: 'get_repos', payload: data})
   }
 
    //get single user
@@ -68,9 +88,11 @@ export default function GithubProvider({children}) {
             users: state.users,
             loading: state.loading,
             user: state.user,
+            repos: state.repos,
             searchUsers,
             clearUsers,
-            getUser
+            getUser,
+            getUserRepos
         }}
         >
             {children}
