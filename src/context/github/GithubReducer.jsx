@@ -6,6 +6,12 @@ function githubReducer(state, action) {
                 users: action.payload,
                 loading: false
             }
+        case 'get_single_user':
+            return {
+                ...state,
+                user: action.payload,
+                loading: false
+            }
         case 'set_loading':
             return {
                 ...state, 

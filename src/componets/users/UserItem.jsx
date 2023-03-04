@@ -7,7 +7,7 @@ function UserItem({user: {avatar, login}}) {
             <img src={avatar} alt="Profile" className="w-14 h-14 rounded-full avatar" />
             <div className="flex flex-col justify-between">
                 <h2 className="card-title">{login}</h2>
-                <Link to={`/users/${login}`} className='text-base-content text-opacity-40 capitalize' >visit profile</Link>
+                <Link to={`/user/${login}`} className='text-base-content text-opacity-40 capitalize' >visit profile</Link>
             </div>
         </div>
     </div>

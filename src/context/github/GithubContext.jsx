@@ -9,6 +9,7 @@ const token = import.meta.env.VITE_GITHUB_TOKEN
 export default function GithubProvider({children}) {
   const initialState = {
     users: [],
+    user: {},
     loading: false
   }
   const [state, dispatch] = useReducer(githubReducer, initialState)
@@ -38,6 +39,23 @@ export default function GithubProvider({children}) {
      dispatch({type: 'get_users', payload: usersData})
   }
 
+   //get single user
+   async function getUser(user) {
+    setLoading()
+    const options = {
+        headers: {
+            authorization: `token ${token}`
+        }
+    }
+    const response = await fetch(`${url}/users/${user}`, options)  
+    if(!response.ok) {
+      window.location = '/notfound'
+    }  else {
+      const userData = await response.json()  
+       dispatch({type: 'get_single_user', payload: userData})
+    }
+  }
+
   //seting loading state
   function setLoading() {
     dispatch({type: 'set_loading'})
@@ -49,8 +67,10 @@ export default function GithubProvider({children}) {
         <GithubContext.Provider value={{
             users: state.users,
             loading: state.loading,
+            user: state.user,
             searchUsers,
-            clearUsers
+            clearUsers,
+            getUser
         }}
         >
             {children}
